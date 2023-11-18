@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-sqlOnDemand--drone-analytics-2023",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/4490d2af-bd49-48d6-a1cb-a54914b8a4a0/resourceGroups/rg-azure-synapses/providers/Microsoft.Synapse/workspaces/drone-analytics-2023",
+		"groupId": "sqlOnDemand",
+		"fqdns": [
+			"drone-analytics-2023-ondemand.1cde49de-6de1-4016-83c4-290d17026359.sql.azuresynapse.net"
+		]
+	}
+}
