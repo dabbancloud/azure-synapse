@@ -1,0 +1,180 @@
+{
+	"name": "Pipeline 1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy telemetry data",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureDataExplorerSink"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "DeviceData",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DeviceData",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "LocalDateTime",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LocalDateTime",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "DeviceState",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DeviceState",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "CoreTemp",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CoreTemp",
+									"type": "Int64",
+									"physicalType": "long"
+								}
+							},
+							{
+								"source": {
+									"name": "CoreStatus",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CoreStatus",
+									"type": "String",
+									"physicalType": "string"
+								}
+							},
+							{
+								"source": {
+									"name": "Compass",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Compass",
+									"type": "Int64",
+									"physicalType": "long"
+								}
+							},
+							{
+								"source": {
+									"name": "Altitude",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Altitude",
+									"type": "Int64",
+									"physicalType": "long"
+								}
+							},
+							{
+								"source": {
+									"name": "Speed",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Speed",
+									"type": "Int64",
+									"physicalType": "long"
+								}
+							},
+							{
+								"source": {
+									"name": "PayloadWeight",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PayloadWeight",
+									"type": "Int64",
+									"physicalType": "long"
+								}
+							},
+							{
+								"source": {
+									"name": "EventData",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "EventData",
+									"type": "String",
+									"physicalType": "string"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DelimitedText2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "fleet_data_pipeline_table",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}

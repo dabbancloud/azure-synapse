@@ -1,0 +1,64 @@
+{
+	"name": "DelimitedText2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "drone-analytics-2023-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "drone-telemetry-simplified.csv",
+				"fileSystem": "simplified-data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "DeviceData",
+				"type": "String"
+			},
+			{
+				"name": "LocalDateTime",
+				"type": "String"
+			},
+			{
+				"name": "DeviceState",
+				"type": "String"
+			},
+			{
+				"name": "CoreTemp",
+				"type": "String"
+			},
+			{
+				"name": "CoreStatus",
+				"type": "String"
+			},
+			{
+				"name": "Compass",
+				"type": "String"
+			},
+			{
+				"name": "Altitude",
+				"type": "String"
+			},
+			{
+				"name": "Speed",
+				"type": "String"
+			},
+			{
+				"name": "PayloadWeight",
+				"type": "String"
+			},
+			{
+				"name": "EventData",
+				"type": "String"
+			}
+		]
+	}
+}

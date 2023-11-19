@@ -1,0 +1,56 @@
+{
+	"name": "fleet_data_pipeline_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "droneanalyticsadx",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [
+			{
+				"name": "DeviceData",
+				"type": "string"
+			},
+			{
+				"name": "LocalDateTime",
+				"type": "string"
+			},
+			{
+				"name": "DeviceState",
+				"type": "string"
+			},
+			{
+				"name": "CoreTemp",
+				"type": "long"
+			},
+			{
+				"name": "CoreStatus",
+				"type": "string"
+			},
+			{
+				"name": "Compass",
+				"type": "long"
+			},
+			{
+				"name": "Altitude",
+				"type": "long"
+			},
+			{
+				"name": "Speed",
+				"type": "long"
+			},
+			{
+				"name": "PayloadWeight",
+				"type": "long"
+			},
+			{
+				"name": "EventData",
+				"type": "string"
+			}
+		],
+		"typeProperties": {
+			"table": "['fleet data pipeline']"
+		}
+	}
+}
