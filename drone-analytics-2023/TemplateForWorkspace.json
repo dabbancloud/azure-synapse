@@ -181,6 +181,25 @@
 				"type": "KqlQuery"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/KQL script 2')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": ".alter database ['drone-telemetry'] policy streamingingestion enable",
+					"metadata": {
+						"language": "kql"
+					},
+					"currentConnection": {
+						"poolName": "droneanalyticsadx2023",
+						"databaseName": "drone-telemetry"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
 		}
 	]
 }
