@@ -1,0 +1,16 @@
+{
+	"name": "KQL script 1",
+	"properties": {
+		"content": {
+			"query": ".show database ['drone-telemetry'] policy retention",
+			"metadata": {
+				"language": "kql"
+			},
+			"currentConnection": {
+				"poolName": "droneanalyticsadx2023",
+				"databaseName": "drone-telemetry"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}
