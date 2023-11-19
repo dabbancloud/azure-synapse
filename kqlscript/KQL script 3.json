@@ -1,0 +1,16 @@
+{
+	"name": "KQL script 3",
+	"properties": {
+		"content": {
+			"query": ".create table ['fleet data pipeline'] (\n    DeviceData: string,\n    LocalDateTime: string,\n    DeviceState: string,\n    CoreTemp: long,\n    CoreStatus: string,\n    Compass: long,\n    Altitude: long,\n    Speed: long,\n    PayloadWeight: long,\n    EventData: string\n)",
+			"metadata": {
+				"language": "kql"
+			},
+			"currentConnection": {
+				"poolName": "droneanalyticsadx2023",
+				"databaseName": "drone-telemetry"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}
