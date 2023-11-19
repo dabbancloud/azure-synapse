@@ -1,0 +1,16 @@
+{
+	"name": "KQL script 4",
+	"properties": {
+		"content": {
+			"query": "['fleet data pipeline']\n| take 100",
+			"metadata": {
+				"language": "kql"
+			},
+			"currentConnection": {
+				"poolName": "droneanalyticsadx2023",
+				"databaseName": "drone-telemetry"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}
