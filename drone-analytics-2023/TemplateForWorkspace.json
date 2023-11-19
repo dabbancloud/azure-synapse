@@ -100,6 +100,63 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/KQL script 1')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": ".show database ['drone-telemetry'] policy retention",
+					"metadata": {
+						"language": "kql"
+					},
+					"currentConnection": {
+						"poolName": "droneanalyticsadx2023",
+						"databaseName": "drone-telemetry"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/KQL script 2')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": ".alter database ['drone-telemetry'] policy streamingingestion enable",
+					"metadata": {
+						"language": "kql"
+					},
+					"currentConnection": {
+						"poolName": "droneanalyticsadx2023",
+						"databaseName": "drone-telemetry"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/KQL script 3')]",
+			"type": "Microsoft.Synapse/workspaces/kqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": ".create table ['fleet data pipeline'] (\n    DeviceData: string,\n    LocalDateTime: string,\n    DeviceState: string,\n    CoreTemp: long,\n    CoreStatus: string,\n    Compass: long,\n    Altitude: long,\n    Speed: long,\n    PayloadWeight: long,\n    EventData: string\n)",
+					"metadata": {
+						"language": "kql"
+					},
+					"currentConnection": {
+						"poolName": "droneanalyticsadx2023",
+						"databaseName": "drone-telemetry"
+					}
+				},
+				"type": "KqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/default')]",
 			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks",
 			"apiVersion": "2019-06-01-preview",
@@ -162,44 +219,6 @@
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/KQL script 1')]",
-			"type": "Microsoft.Synapse/workspaces/kqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": ".show database ['drone-telemetry'] policy retention",
-					"metadata": {
-						"language": "kql"
-					},
-					"currentConnection": {
-						"poolName": "droneanalyticsadx2023",
-						"databaseName": "drone-telemetry"
-					}
-				},
-				"type": "KqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/KQL script 2')]",
-			"type": "Microsoft.Synapse/workspaces/kqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"content": {
-					"query": ".alter database ['drone-telemetry'] policy streamingingestion enable",
-					"metadata": {
-						"language": "kql"
-					},
-					"currentConnection": {
-						"poolName": "droneanalyticsadx2023",
-						"databaseName": "drone-telemetry"
-					}
-				},
-				"type": "KqlQuery"
-			},
-			"dependsOn": []
 		}
 	]
 }
