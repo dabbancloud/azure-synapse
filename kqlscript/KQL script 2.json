@@ -1,0 +1,16 @@
+{
+	"name": "KQL script 2",
+	"properties": {
+		"content": {
+			"query": ".alter database ['drone-telemetry'] policy streamingingestion enable",
+			"metadata": {
+				"language": "kql"
+			},
+			"currentConnection": {
+				"poolName": "droneanalyticsadx2023",
+				"databaseName": "drone-telemetry"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}
