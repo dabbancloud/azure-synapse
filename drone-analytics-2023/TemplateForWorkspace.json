@@ -15,6 +15,10 @@
 		"drone-analytics-2023-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dronetelemetrydatalake1.dfs.core.windows.net"
+		},
+		"droneanalyticsadx_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "drone-telemetry"
 		}
 	},
 	"variables": {
@@ -218,6 +222,374 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/droneanalyticsadx')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDataExplorer",
+				"typeProperties": {
+					"endpoint": "https://droneanalyticsadx2023.drone-analytics-2023.kusto.azuresynapse.net",
+					"database": "[parameters('droneanalyticsadx_properties_typeProperties_database')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Pipeline 1')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy telemetry data",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureDataExplorerSink"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "DeviceData",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DeviceData",
+											"type": "String",
+											"physicalType": "string"
+										}
+									},
+									{
+										"source": {
+											"name": "LocalDateTime",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LocalDateTime",
+											"type": "String",
+											"physicalType": "string"
+										}
+									},
+									{
+										"source": {
+											"name": "DeviceState",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DeviceState",
+											"type": "String",
+											"physicalType": "string"
+										}
+									},
+									{
+										"source": {
+											"name": "CoreTemp",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CoreTemp",
+											"type": "Int64",
+											"physicalType": "long"
+										}
+									},
+									{
+										"source": {
+											"name": "CoreStatus",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CoreStatus",
+											"type": "String",
+											"physicalType": "string"
+										}
+									},
+									{
+										"source": {
+											"name": "Compass",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Compass",
+											"type": "Int64",
+											"physicalType": "long"
+										}
+									},
+									{
+										"source": {
+											"name": "Altitude",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Altitude",
+											"type": "Int64",
+											"physicalType": "long"
+										}
+									},
+									{
+										"source": {
+											"name": "Speed",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Speed",
+											"type": "Int64",
+											"physicalType": "long"
+										}
+									},
+									{
+										"source": {
+											"name": "PayloadWeight",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "PayloadWeight",
+											"type": "Int64",
+											"physicalType": "long"
+										}
+									},
+									{
+										"source": {
+											"name": "EventData",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "EventData",
+											"type": "String",
+											"physicalType": "string"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedText2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "fleet_data_pipeline_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/DelimitedText2')]",
+				"[concat(variables('workspaceId'), '/datasets/fleet_data_pipeline_table')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/DelimitedText1')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "drone-analytics-2023-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "raw-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/drone-analytics-2023-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/fleet_data_pipeline_table')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "droneanalyticsadx",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureDataExplorerTable",
+				"schema": [
+					{
+						"name": "DeviceData",
+						"type": "string"
+					},
+					{
+						"name": "LocalDateTime",
+						"type": "string"
+					},
+					{
+						"name": "DeviceState",
+						"type": "string"
+					},
+					{
+						"name": "CoreTemp",
+						"type": "long"
+					},
+					{
+						"name": "CoreStatus",
+						"type": "string"
+					},
+					{
+						"name": "Compass",
+						"type": "long"
+					},
+					{
+						"name": "Altitude",
+						"type": "long"
+					},
+					{
+						"name": "Speed",
+						"type": "long"
+					},
+					{
+						"name": "PayloadWeight",
+						"type": "long"
+					},
+					{
+						"name": "EventData",
+						"type": "string"
+					}
+				],
+				"typeProperties": {
+					"table": "['fleet data pipeline']"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/droneanalyticsadx')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/DelimitedText2')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "drone-analytics-2023-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "drone-telemetry-simplified.csv",
+						"fileSystem": "simplified-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "DeviceData",
+						"type": "String"
+					},
+					{
+						"name": "LocalDateTime",
+						"type": "String"
+					},
+					{
+						"name": "DeviceState",
+						"type": "String"
+					},
+					{
+						"name": "CoreTemp",
+						"type": "String"
+					},
+					{
+						"name": "CoreStatus",
+						"type": "String"
+					},
+					{
+						"name": "Compass",
+						"type": "String"
+					},
+					{
+						"name": "Altitude",
+						"type": "String"
+					},
+					{
+						"name": "Speed",
+						"type": "String"
+					},
+					{
+						"name": "PayloadWeight",
+						"type": "String"
+					},
+					{
+						"name": "EventData",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/drone-analytics-2023-WorkspaceDefaultStorage')]"
 			]
 		}
 	]
